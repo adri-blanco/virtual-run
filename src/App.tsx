@@ -1,9 +1,7 @@
-import MapPage from './pages/MapPage';
+import MapPage from "./pages/MapPage";
 
 function App() {
-  return (
-    <MapPage />
-  );
+  return <MapPage />;
 }
 
 export default App;
