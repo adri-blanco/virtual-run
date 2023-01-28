@@ -48,5 +48,11 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const Title = styled.span`
-  font-size: clamp(2rem, 5vw, 5rem);
+  font-size: clamp(1.5rem, 4.5vw, 5rem);
+`;
+
+export const DataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
