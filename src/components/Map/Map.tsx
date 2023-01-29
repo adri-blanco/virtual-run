@@ -4,6 +4,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapProps from "./Map.types";
 import { useMapContext } from "../../context/map-context";
 
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
+
 const MapComp = ({ className, center, onLoad }: MapProps) => {
   const container = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);

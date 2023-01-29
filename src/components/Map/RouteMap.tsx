@@ -3,8 +3,6 @@ import mapboxgl, { Map } from "mapbox-gl";
 import * as Styled from "./RouteMap.styles";
 import Route from "../../assets/camino-de-fisterra";
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN || "";
-
 const center = [-5.340904756902802, 43.20495172039625];
 
 function addRoute(map: Map) {
