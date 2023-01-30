@@ -11,17 +11,17 @@ const MakeItSmall = keyframes`
   }
 
   40% {
-    height: min(20%, 200px);
+    height: min(15%, 200px);
     width: 100%;
   }
 
   60% {
-    height: min(20%, 200px);
+    height: min(15%, 200px);
   }
 
   100% {
     width: min(100%, 700px);
-    height: min(20%, 200px);
+    height: min(15%, 200px);
   }
 `;
 
@@ -30,6 +30,7 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   box-sizing: border-box;
   justify-content: center;
+  gap: 24px;
   align-items: center;
   background: white;
   padding: 24px 48px;
