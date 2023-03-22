@@ -5,6 +5,7 @@ type MapProps = {
   center?: [number, number];
   className?: string;
   onLoad?: (ref: MutableRefObject<Map>) => void;
+  zoom?: number;
 };
 
 export default MapProps;

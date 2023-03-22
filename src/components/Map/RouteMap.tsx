@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import mapboxgl, { GeoJSONSource, Map } from "mapbox-gl";
 import along from "@turf/along";
 import length from "@turf/length";
@@ -7,8 +7,8 @@ import Route from "../../assets/camino-de-fisterra";
 import { useMapContext } from "../../context/map-context";
 import { Feature, Point, Position, lineString } from "@turf/helpers";
 
-const center = [-5.340904756902802, 43.20495172039625];
-const ANIMATION_STEP = 0.25;
+const ANIMATION_STEP = 0.15;
+const TITLE_ANIMATION_MS = 3500;
 
 function addRoute(map: Map) {
   map.addSource("route", {
@@ -77,9 +77,16 @@ function addPoint(map: Map) {
   });
 }
 
-function animate(map: Map, routeLength: number, distance: number, current = 0) {
+function animate(
+  map: Map,
+  routeLength: number,
+  distance: number,
+  onFinish: () => void,
+  current = 0
+) {
   const Coordinates = Route.features[0].geometry.coordinates;
   if (routeLength <= current || distance <= current) {
+    onFinish();
     return;
   }
 
@@ -92,8 +99,21 @@ function animate(map: Map, routeLength: number, distance: number, current = 0) {
   const source = map.getSource("athleteMarker") as GeoJSONSource;
   source.setData(generatePoint(nextPosition.geometry.coordinates));
 
+  const camera = map.getFreeCameraOptions();
+
+  // set the position and altitude of the camera
+  camera.position = mapboxgl.MercatorCoordinate.fromLngLat(
+    {
+      lng: nextPosition.geometry.coordinates[0],
+      lat: nextPosition.geometry.coordinates[1],
+    },
+    80000
+  );
+
+  map.setFreeCameraOptions(camera);
+
   requestAnimationFrame(() =>
-    animate(map, routeLength, distance, current + ANIMATION_STEP)
+    animate(map, routeLength, distance, onFinish, current + ANIMATION_STEP)
   );
 }
 
@@ -101,23 +121,34 @@ function RouteMap() {
   const map = useRef<Map | null>(null);
   const { distance, idle } = useMapContext();
 
+  const onAnimationFinish = useCallback(() => {
+    setTimeout(async () => {
+      centerView(map.current as Map);
+    }, 1000);
+  }, []);
+
   useEffect(() => {
     if (distance && idle && map.current) {
-      setTimeout(
-        () => animate(map.current as Map, length(Route), distance),
-        3500
-      );
+      setTimeout(async () => {
+        animate(map.current as Map, length(Route), distance, onAnimationFinish);
+      }, TITLE_ANIMATION_MS);
     }
-  }, [distance, idle]);
+  }, [distance, idle, onAnimationFinish]);
 
   function onLoad(mapRef: MutableRefObject<Map>) {
     map.current = mapRef.current;
     addRoute(map.current);
     addPoint(map.current);
-    centerView(map.current);
   }
 
-  return <Styled.Map center={[center[0], center[1]]} onLoad={onLoad} />;
+  const INITIAL_COORD = Route.features[0].geometry.coordinates[0];
+  return (
+    <Styled.Map
+      center={[INITIAL_COORD[0], INITIAL_COORD[1]]}
+      onLoad={onLoad}
+      zoom={10.01}
+    />
+  );
 }
 
 export default RouteMap;
