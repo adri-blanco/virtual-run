@@ -32,7 +32,6 @@ export const Container = styled.div<ContainerProps>`
   box-sizing: border-box;
   justify-content: center;
   gap: 24px;
-  align-items: center;
   background: white;
   padding: 24px 48px;
   z-index: 3;
@@ -47,6 +46,16 @@ export const Container = styled.div<ContainerProps>`
     css`
       animation: ${MakeItSmall} 3s forwards;
     `}
+
+  ${({ small }) =>
+    !small &&
+    css`
+      align-items: center;
+    `}
+`;
+
+export const InnerContainer = styled.div`
+  display: flex;
 `;
 
 export const Title = styled.span`
@@ -57,4 +66,7 @@ export const DataContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex-grow: 1;
+  align-items: flex-end;
+  justify-content: center;
 `;

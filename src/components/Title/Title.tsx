@@ -12,18 +12,20 @@ function Title() {
 
   return (
     <Styled.Container small={isContainerSmall()}>
-      <Styled.Title>Camino de Santiago</Styled.Title>
+      <Styled.InnerContainer>
+        <Styled.Title>Camino de Santiago</Styled.Title>
 
-      {idle && distance && (
-        <Styled.DataContainer>
-          <span>
-            {distance?.toFixed(2)}/{destinationDistance.toFixed(2)}km
-          </span>
-          <span>{activities} activities</span>
-        </Styled.DataContainer>
-      )}
+        {idle && distance && (
+          <Styled.DataContainer>
+            <span>
+              {distance?.toFixed(2)}/{destinationDistance.toFixed(2)}km
+            </span>
+            <span>{activities} activities</span>
+          </Styled.DataContainer>
+        )}
+      </Styled.InnerContainer>
 
-      {!idle && !error && <span>Loading...</span>}
+      {!isContainerSmall() && <span>Loading...</span>}
       {error && <span>{error}</span>}
     </Styled.Container>
   );
