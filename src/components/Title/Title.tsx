@@ -5,11 +5,13 @@ import { useMemo } from "react";
 import length from "@turf/length";
 
 function Title() {
-  const { idle, distance, activities } = useMapContext();
+  const { idle, distance, activities, error } = useMapContext();
   const destinationDistance = useMemo(() => length(Route), []);
 
+  const isContainerSmall = () => !!(idle && distance && !error);
+
   return (
-    <Styled.Container small={idle}>
+    <Styled.Container small={isContainerSmall()}>
       <Styled.Title>Camino de Santiago</Styled.Title>
 
       {idle && distance && (
@@ -20,6 +22,9 @@ function Title() {
           <span>{activities} activities</span>
         </Styled.DataContainer>
       )}
+
+      {!idle && !error && <span>Loading...</span>}
+      {error && <span>{error}</span>}
     </Styled.Container>
   );
 }

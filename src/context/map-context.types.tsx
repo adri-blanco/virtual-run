@@ -7,6 +7,7 @@ export type MapContextType = {
   setDistance: Dispatch<SetStateAction<number | undefined>>;
   activities?: number;
   setActivities: Dispatch<SetStateAction<number | undefined>>;
+  error?: string | null;
 };
 
 export type MapContextProviderType = {

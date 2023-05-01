@@ -28,6 +28,7 @@ const MakeItSmall = keyframes`
 export const Container = styled.div<ContainerProps>`
   position: absolute;
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   justify-content: center;
   gap: 24px;
